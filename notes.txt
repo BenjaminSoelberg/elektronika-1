@@ -1,0 +1,5 @@
+full: Supports all format specifiers. This is the default.
+• nofloat: Excludes support for printing and scanning floating-point values. Supports all
+format specifiers except %a, %A, %f, %F, %g, %G, %e, and %E.
+• minimal: Supports the printing and scanning of integer, char, or string values without
+width or precision flags. Specifically, only the %%, %d, %o, %c, %s, and %x format specifiers are supported
