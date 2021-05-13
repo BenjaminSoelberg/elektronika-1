@@ -36,7 +36,7 @@ int main(void)
 
     RealtimeClock_init();
     Buttons_init();
-    Display_init();
+    //Display_init();
 
     //Debug
     RealtimeClock_start();
@@ -47,7 +47,7 @@ int main(void)
 
     while (true) {
         __low_power_mode_3();
-        blink();
+//        blink();
     }
 
     //return (0);

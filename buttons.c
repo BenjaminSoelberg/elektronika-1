@@ -1,9 +1,6 @@
 #include "buttons.h"
 #include "gpio.h"
-
-
-#define ALL_BUTTON_PINS (GPIO_PIN0 | GPIO_PIN1 | GPIO_PIN2 | GPIO_PIN3)
-#define BUTTON_PORT GPIO_PORT_P1
+#include "driverlib_ng.h"
 
 bool volatile timer_running = false;
 
@@ -11,8 +8,8 @@ void Buttons_timer_stop(void);
 
 void Buttons_init(void)
 {
-    GPIO_setAsInputPinWithPullDownResistor(BUTTON_PORT, ALL_BUTTON_PINS);
-    GPIO_selectInterruptEdge(BUTTON_PORT, ALL_BUTTON_PINS, GPIO_LOW_TO_HIGH_TRANSITION);
+    GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P2, GPIO_PIN3);
+    GPIO_selectInterruptEdge(GPIO_PORT_P2, GPIO_PIN3, GPIO_HIGH_TO_LOW_TRANSITION);
 
     Timer_A_initUpModeParam parameters = {
             .clockSource = TIMER_A_CLOCKSOURCE_ACLK,
@@ -29,18 +26,19 @@ void Buttons_init(void)
 
 void Buttons_start(void)
 {
-    GPIO_enableInterrupt(BUTTON_PORT, ALL_BUTTON_PINS);
+    GPIO_clearInterrupt(GPIO_PORT_P2, GPIO_PIN3);
+    GPIO_enableInterrupt(GPIO_PORT_P2, GPIO_PIN3);
 }
 
 void Buttons_stop(void)
 {
-    GPIO_disableInterrupt(BUTTON_PORT, ALL_BUTTON_PINS);
+    GPIO_disableInterrupt(GPIO_PORT_P2, GPIO_PIN3);
     Buttons_timer_stop();
 }
 
 void Buttons_timer_start(void)
 {
-    unsigned short volatile lock;
+    unsigned short lock;
     ENTER_CRITICAL_SECTION(lock);
     if (!timer_running) {
         Timer_A_clear(BUTTONS_TIMER_BASE);
@@ -52,16 +50,16 @@ void Buttons_timer_start(void)
 
 void Buttons_timer_stop(void)
 {
-    unsigned short volatile lock;
+    unsigned short lock;
     ENTER_CRITICAL_SECTION(lock);
-    if (!timer_running) {
+    if (timer_running) {
         Timer_A_stop(BUTTONS_TIMER_BASE);
         timer_running = false;
     }
     EXIT_CRITICAL_SECTION(lock);
 }
 
-#pragma vector=PORT1_VECTOR
+#pragma vector=PORT2_VECTOR
 __interrupt void Buttons_pressed_isr(void)
 {
 #ifdef CONFIG_BUTTONS_PRESSED_BLINK_ALIVE
@@ -70,7 +68,7 @@ __interrupt void Buttons_pressed_isr(void)
 #endif
 
     Buttons_timer_start();
-    GPIO_clearInterrupt(BUTTON_PORT, ALL_BUTTON_PINS);
+    GPIO_clearInterrupt(GPIO_PORT_P2, GPIO_PIN3);
 }
 
 #pragma vector=BUTTONS_TIMER_VECTOR
@@ -81,9 +79,8 @@ __interrupt void Buttons_timer_isr(void)
     P1OUT ^= 0x02;
 #endif
 
-    //if no buttons are pressed then stop the poll timer ???
-    uint8_t status = GPIO_getInputPinValue(BUTTON_PORT, ALL_BUTTON_PINS);
-    if (!status) {
+    uint16_t status = GPIO_getInputPinValues(GPIO_PORT_P2, GPIO_PIN3);
+    if (BIT_IS_SET(status, GPIO_PIN3)) {
         Buttons_timer_stop();
     }
 

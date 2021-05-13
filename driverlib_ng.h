@@ -1,7 +1,7 @@
-#ifndef __TIMER_H__
-#define __TIMER_H__
+#ifndef __DRIVERLIB_NG_H__
+#define __DRIVERLIB_NG_H__
 
-#include "elektronika.h"
+#include "driverlib.h"
 
 //*****************************************************************************
 //
@@ -10,8 +10,11 @@
 //
 //*****************************************************************************
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
+
+extern uint16_t GPIO_getInputPinValues(uint8_t selectedPort, uint16_t selectedPins);
 
 extern void Timer_A_startContinuousTimer(uint16_t baseAddress);
 
@@ -26,4 +29,4 @@ extern void Timer_A_stopContinuousTimer(uint16_t baseAddress);
 }
 #endif
 
-#endif /* __TIMER_H__ */
+#endif /* __DRIVERLIB_NG_H__ */
