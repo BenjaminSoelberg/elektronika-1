@@ -1,8 +1,15 @@
-#ifndef __RTCCLOCK_H__
-#define __RTCCLOCK_H__
+#ifndef __ELEKTRONIKA_H__
+#define __ELEKTRONIKA_H__
 
-#include "elektronika.h"
-#include <time.h>
+#include <msp430.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <stdbool.h>
+
+#include "driverlib.h"
+#include "config.h"
+#include "utils.h"
+
 
 //*****************************************************************************
 //
@@ -15,13 +22,12 @@ extern "C"
 {
 #endif
 
-extern uint32_t current_time;
-extern void RealtimeClock_init(void);
-extern void RealtimeClock_start(void);
-extern void RealtimeClock_stop(void);
-
-extern struct tm* RealtimeClock_getCurrentTime(void);
-
+/* HARDWARE TIMER ASSIGNMENT:
+     TA0CCR1: Used by the button driver
+     TA0CCR2: Unused
+     TA1CCR1: Used by the display driver to multiplex the segments
+     TA0CCR2: Used by the display driver to turn off the display when no buttons are pushed for a specified amount of time
+ */
 
 //*****************************************************************************
 //
@@ -32,4 +38,4 @@ extern struct tm* RealtimeClock_getCurrentTime(void);
 }
 #endif
 
-#endif /* __RTCCLOCK_H__ */
+#endif /* ELEKTRONIKA_H_ */

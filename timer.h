@@ -1,8 +1,7 @@
-#ifndef __RTCCLOCK_H__
-#define __RTCCLOCK_H__
+#ifndef __TIMER_H__
+#define __TIMER_H__
 
 #include "elektronika.h"
-#include <time.h>
 
 //*****************************************************************************
 //
@@ -11,17 +10,12 @@
 //
 //*****************************************************************************
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
-extern uint32_t current_time;
-extern void RealtimeClock_init(void);
-extern void RealtimeClock_start(void);
-extern void RealtimeClock_stop(void);
+extern void Timer_A_startContinuousTimer(uint16_t baseAddress);
 
-extern struct tm* RealtimeClock_getCurrentTime(void);
-
+extern void Timer_A_stopContinuousTimer(uint16_t baseAddress);
 
 //*****************************************************************************
 //
@@ -32,4 +26,4 @@ extern struct tm* RealtimeClock_getCurrentTime(void);
 }
 #endif
 
-#endif /* __RTCCLOCK_H__ */
+#endif /* __TIMER_H__ */

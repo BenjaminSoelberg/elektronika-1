@@ -1,8 +1,8 @@
-#ifndef __RTCCLOCK_H__
-#define __RTCCLOCK_H__
+#ifndef __DISPLAY_H__
+#define __DISPLAY_H__
 
 #include "elektronika.h"
-#include <time.h>
+
 
 //*****************************************************************************
 //
@@ -15,13 +15,14 @@ extern "C"
 {
 #endif
 
-extern uint32_t current_time;
-extern void RealtimeClock_init(void);
-extern void RealtimeClock_start(void);
-extern void RealtimeClock_stop(void);
+#define DISPLAY_TIMER_BASE TIMER_A0_BASE
+#define DISPLAY_TIMER_VECTOR TIMER0_A1_VECTOR
+#define DISPLAY_MULTIPLEX_HZ 100
 
-extern struct tm* RealtimeClock_getCurrentTime(void);
-
+extern void Display_init(void);
+extern void Display_start(void);
+extern void Display_stop(void);
+extern void Display_update(uint8_t *data);
 
 //*****************************************************************************
 //
@@ -32,4 +33,4 @@ extern struct tm* RealtimeClock_getCurrentTime(void);
 }
 #endif
 
-#endif /* __RTCCLOCK_H__ */
+#endif /* __DISPLAY_H__ */

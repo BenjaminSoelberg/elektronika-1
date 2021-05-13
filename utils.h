@@ -1,8 +1,5 @@
-#ifndef __RTCCLOCK_H__
-#define __RTCCLOCK_H__
-
-#include "elektronika.h"
-#include <time.h>
+#ifndef __UTILS_H__
+#define __UTILS_H__
 
 //*****************************************************************************
 //
@@ -15,13 +12,11 @@ extern "C"
 {
 #endif
 
-extern uint32_t current_time;
-extern void RealtimeClock_init(void);
-extern void RealtimeClock_start(void);
-extern void RealtimeClock_stop(void);
-
-extern struct tm* RealtimeClock_getCurrentTime(void);
-
+#define st(x)                       do { x } while (__LINE__ == -1)
+#define ENTER_CRITICAL_SECTION(x)   st( x = __get_SR_register(); __disable_interrupt(); )
+#define EXIT_CRITICAL_SECTION(x)    __set_interrupt_state(x)
+#define BIT_IS_SET(F, B)            ((F) | (B)) == (F)
+#define REBOOT()                    PMMCTL0 = PMMPW | PMMSWBOR; // generate BOR
 
 //*****************************************************************************
 //
@@ -32,4 +27,4 @@ extern struct tm* RealtimeClock_getCurrentTime(void);
 }
 #endif
 
-#endif /* __RTCCLOCK_H__ */
+#endif /* __UTILS_H__ */

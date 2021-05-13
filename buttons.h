@@ -1,8 +1,7 @@
-#ifndef __RTCCLOCK_H__
-#define __RTCCLOCK_H__
+#ifndef __BUTTONS_H__
+#define __BUTTONS_H__
 
 #include "elektronika.h"
-#include <time.h>
 
 //*****************************************************************************
 //
@@ -15,13 +14,13 @@ extern "C"
 {
 #endif
 
-extern uint32_t current_time;
-extern void RealtimeClock_init(void);
-extern void RealtimeClock_start(void);
-extern void RealtimeClock_stop(void);
+#define BUTTONS_POLL_HZ 20
+#define BUTTONS_TIMER_BASE TIMER_A1_BASE
+#define BUTTONS_TIMER_VECTOR TIMER1_A1_VECTOR
 
-extern struct tm* RealtimeClock_getCurrentTime(void);
-
+extern void Buttons_init(void);
+extern void Buttons_start(void);
+extern void Buttons_stop(void);
 
 //*****************************************************************************
 //
@@ -32,4 +31,4 @@ extern struct tm* RealtimeClock_getCurrentTime(void);
 }
 #endif
 
-#endif /* __RTCCLOCK_H__ */
+#endif /* __BUTTONS_H__ */
