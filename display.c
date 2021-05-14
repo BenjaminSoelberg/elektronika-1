@@ -1,8 +1,19 @@
 #include "display.h"
-#include "gpio.h"
 
+void Display_set_all_pins_low();
 uint8_t screen[] = {0, 0, 0, 0};
 uint8_t volatile index = 0;
+
+#define DISPLAY_SEGMENT_PORT GPIO_PORT_P1
+#define DISPLAY_SEGMENT_PINS (GPIO_PIN0 | GPIO_PIN1 | GPIO_PIN2 | GPIO_PIN3 | GPIO_PIN4 | GPIO_PIN5 | GPIO_PIN6 | GPIO_PIN7)
+#define DISPLAY_DIGIT_1_PORT GPIO_PORT_P2
+#define DISPLAY_DIGIT_1_PIN  GPIO_PIN2
+#define DISPLAY_DIGIT_2_PORT GPIO_PORT_P3
+#define DISPLAY_DIGIT_2_PIN  GPIO_PIN0
+#define DISPLAY_DIGIT_3_PORT GPIO_PORT_P3
+#define DISPLAY_DIGIT_3_PIN  GPIO_PIN1
+#define DISPLAY_DIGIT_4_PORT GPIO_PORT_P3
+#define DISPLAY_DIGIT_4_PIN  GPIO_PIN2
 
 void Display_init(void)
 {
@@ -18,12 +29,13 @@ void Display_init(void)
 
     Timer_A_initUpMode(DISPLAY_TIMER_BASE, &parameters);
 
-    GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN6 | GPIO_PIN7);
-    GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN2 | GPIO_PIN3 | GPIO_PIN4 | GPIO_PIN5 | GPIO_PIN6 | GPIO_PIN7);
-    GPIO_setAsOutputPin(GPIO_PORT_P3, GPIO_PIN0 | GPIO_PIN1 | GPIO_PIN2);
-    GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN6 | GPIO_PIN7);
-    GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN2 | GPIO_PIN3 | GPIO_PIN4 | GPIO_PIN5 | GPIO_PIN6 | GPIO_PIN7);
-    GPIO_setOutputLowOnPin(GPIO_PORT_P3, GPIO_PIN0 | GPIO_PIN1 | GPIO_PIN2);
+    GPIO_setAsOutputPin(DISPLAY_SEGMENT_PORT, DISPLAY_SEGMENT_PINS);
+    GPIO_setAsOutputPin(DISPLAY_DIGIT_1_PORT, DISPLAY_DIGIT_1_PIN);
+    GPIO_setAsOutputPin(DISPLAY_DIGIT_2_PORT, DISPLAY_DIGIT_2_PIN);
+    GPIO_setAsOutputPin(DISPLAY_DIGIT_3_PORT, DISPLAY_DIGIT_3_PIN);
+    GPIO_setAsOutputPin(DISPLAY_DIGIT_4_PORT, DISPLAY_DIGIT_4_PIN);
+
+    Display_set_all_pins_low();
 }
 
 void Display_start(void)
@@ -36,7 +48,16 @@ void Display_start(void)
 void Display_stop(void)
 {
     Timer_A_stop(DISPLAY_TIMER_BASE);
-    // TODO: Display pin ports off etc.
+    Display_set_all_pins_low();
+}
+
+void Display_set_all_pins_low(void)
+{
+    GPIO_setOutputLowOnPin(DISPLAY_SEGMENT_PORT, DISPLAY_SEGMENT_PINS);
+    GPIO_setOutputLowOnPin(DISPLAY_DIGIT_1_PORT, DISPLAY_DIGIT_1_PIN);
+    GPIO_setOutputLowOnPin(DISPLAY_DIGIT_2_PORT, DISPLAY_DIGIT_2_PIN);
+    GPIO_setOutputLowOnPin(DISPLAY_DIGIT_3_PORT, DISPLAY_DIGIT_3_PIN);
+    GPIO_setOutputLowOnPin(DISPLAY_DIGIT_4_PORT, DISPLAY_DIGIT_4_PIN);
 }
 
 void Display_update(uint8_t *data)
@@ -44,20 +65,39 @@ void Display_update(uint8_t *data)
     memcpy(&screen, data, sizeof(screen));
 }
 
-// Display timer interrupt service routine
 #pragma vector=DISPLAY_TIMER_VECTOR
 __interrupt void Display_multiplex_isr(void)
 {
-#ifdef CONFIG_DISPLAY_BLINK_ALIVE
-    P1DIR |= 0x01;
-    P1OUT ^= 0x01;
-#endif
-
-    uint8_t segment = screen[index];
-
-    //TODO:Outport bits to display
-
-    index = index == sizeof(screen) - 1 ? 0 : index++;
+    switch (index)  //TODO: Make an array of port and pin instead...
+    {
+        case 0: {
+            GPIO_setOutputLowOnPin(DISPLAY_DIGIT_4_PORT, DISPLAY_DIGIT_4_PIN);
+            GPIO_setOutputPinsOnPort(DISPLAY_SEGMENT_PORT, screen[index]);
+            GPIO_setOutputHighOnPin(DISPLAY_DIGIT_1_PORT, DISPLAY_DIGIT_1_PIN);
+            index++;
+            break;
+        }
+        case 1: {
+            GPIO_setOutputLowOnPin(DISPLAY_DIGIT_1_PORT, DISPLAY_DIGIT_1_PIN);
+            GPIO_setOutputPinsOnPort(DISPLAY_SEGMENT_PORT, screen[index]);
+            GPIO_setOutputHighOnPin(DISPLAY_DIGIT_2_PORT, DISPLAY_DIGIT_2_PIN);
+            index++;
+            break;
+        }
+        case 2: {
+            GPIO_setOutputLowOnPin(DISPLAY_DIGIT_2_PORT, DISPLAY_DIGIT_2_PIN);
+            GPIO_setOutputPinsOnPort(DISPLAY_SEGMENT_PORT, screen[index]);
+            GPIO_setOutputHighOnPin(DISPLAY_DIGIT_3_PORT, DISPLAY_DIGIT_3_PIN);
+            index++;
+            break;
+        }
+        case 3: {
+            GPIO_setOutputLowOnPin(DISPLAY_DIGIT_3_PORT, DISPLAY_DIGIT_3_PIN);
+            GPIO_setOutputPinsOnPort(DISPLAY_SEGMENT_PORT, screen[index]);
+            GPIO_setOutputHighOnPin(DISPLAY_DIGIT_4_PORT, DISPLAY_DIGIT_4_PIN);
+            index = 0;
+        }
+    }
 
     Timer_A_clearTimerInterrupt(DISPLAY_TIMER_BASE);
 }

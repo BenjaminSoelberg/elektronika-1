@@ -15,11 +15,7 @@ extern "C"
 #endif
 
 extern uint16_t GPIO_getInputPinValues(uint8_t selectedPort, uint16_t selectedPins);
-
-extern void Timer_A_startContinuousTimer(uint16_t baseAddress);
-
-extern void Timer_A_stopContinuousTimer(uint16_t baseAddress);
-
+extern void GPIO_setOutputPinsOnPort(uint8_t selectedPort, uint16_t pinValues);
 //*****************************************************************************
 //
 // Mark the end of the C bindings section for C++ compilers.

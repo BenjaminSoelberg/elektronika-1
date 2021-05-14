@@ -1,5 +1,4 @@
-#include <rtcclock.h>
-#include <rtc.h>
+#include "rtcclock.h"
 
 //TODO:Fix to use unix epoch time (secs from 1970) to extend lifespan
 

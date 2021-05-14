@@ -1,6 +1,4 @@
 #include "buttons.h"
-#include "gpio.h"
-#include "driverlib_ng.h"
 
 bool volatile timer_running = false;
 
@@ -8,8 +6,8 @@ void Buttons_timer_stop(void);
 
 void Buttons_init(void)
 {
-    GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P2, GPIO_PIN3);
-    GPIO_selectInterruptEdge(GPIO_PORT_P2, GPIO_PIN3, GPIO_HIGH_TO_LOW_TRANSITION);
+    GPIO_setAsInputPinWithPullUpResistor(BUTTONS_PORT, BUTTONS_PINS);
+    GPIO_selectInterruptEdge(BUTTONS_PORT, BUTTONS_PINS, GPIO_HIGH_TO_LOW_TRANSITION);
 
     Timer_A_initUpModeParam parameters = {
             .clockSource = TIMER_A_CLOCKSOURCE_ACLK,
@@ -26,13 +24,13 @@ void Buttons_init(void)
 
 void Buttons_start(void)
 {
-    GPIO_clearInterrupt(GPIO_PORT_P2, GPIO_PIN3);
-    GPIO_enableInterrupt(GPIO_PORT_P2, GPIO_PIN3);
+    GPIO_clearInterrupt(BUTTONS_PORT, BUTTONS_PINS);
+    GPIO_enableInterrupt(BUTTONS_PORT, BUTTONS_PINS);
 }
 
 void Buttons_stop(void)
 {
-    GPIO_disableInterrupt(GPIO_PORT_P2, GPIO_PIN3);
+    GPIO_disableInterrupt(BUTTONS_PORT, BUTTONS_PINS);
     Buttons_timer_stop();
 }
 
@@ -63,24 +61,22 @@ void Buttons_timer_stop(void)
 __interrupt void Buttons_pressed_isr(void)
 {
 #ifdef CONFIG_BUTTONS_PRESSED_BLINK_ALIVE
-    P1DIR |= 0x01;
     P1OUT ^= 0x01;
 #endif
 
     Buttons_timer_start();
-    GPIO_clearInterrupt(GPIO_PORT_P2, GPIO_PIN3);
+    GPIO_clearInterrupt(BUTTONS_PORT, BUTTONS_PINS);
 }
 
 #pragma vector=BUTTONS_TIMER_VECTOR
 __interrupt void Buttons_timer_isr(void)
 {
 #ifdef CONFIG_BUTTONS_TIMER_BLINK_ALIVE
-    P1DIR |= 0x02;
     P1OUT ^= 0x02;
 #endif
 
-    uint16_t status = GPIO_getInputPinValues(GPIO_PORT_P2, GPIO_PIN3);
-    if (BIT_IS_SET(status, GPIO_PIN3)) {
+    uint16_t status = GPIO_getInputPinValues(BUTTONS_PORT, BUTTONS_PINS);
+    if (status == BUTTONS_PINS) { // No buttons are pressed (they are active low)
         Buttons_timer_stop();
     }
 

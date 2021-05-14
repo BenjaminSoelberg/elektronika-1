@@ -36,9 +36,8 @@ int main(void)
 
     RealtimeClock_init();
     Buttons_init();
-    //Display_init();
+    Display_init();
 
-    //Debug
     RealtimeClock_start();
     Buttons_start();
     //Display_start();

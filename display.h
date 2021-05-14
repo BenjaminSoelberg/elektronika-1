@@ -3,7 +3,6 @@
 
 #include "elektronika.h"
 
-
 //*****************************************************************************
 //
 // If building with a C++ compiler, make all of the definitions in this header
@@ -15,9 +14,9 @@ extern "C"
 {
 #endif
 
+#define DISPLAY_MULTIPLEX_HZ 100
 #define DISPLAY_TIMER_BASE TIMER_A0_BASE
 #define DISPLAY_TIMER_VECTOR TIMER0_A1_VECTOR
-#define DISPLAY_MULTIPLEX_HZ 100
 
 extern void Display_init(void);
 extern void Display_start(void);

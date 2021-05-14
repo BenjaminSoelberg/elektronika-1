@@ -114,12 +114,20 @@ uint16_t GPIO_getInputPinValues(uint8_t selectedPort, uint16_t selectedPins) {
     return inputPinValues;
 }
 
-void Timer_A_startContinuousTimer(uint16_t baseAddress)
-{
-    HWREG16(baseAddress + OFS_TAxCTL) |= TIMER_A_CONTINUOUS_MODE;
-}
+void GPIO_setOutputPinsOnPort(uint8_t selectedPort, uint16_t pinValues) {
 
-void Timer_A_stopContinuousTimer(uint16_t baseAddress)
-{
-    HWREG16(baseAddress + OFS_TAxCTL) &= ~TIMER_A_CONTINUOUS_MODE;
+    uint16_t baseAddress = GPIO_PORT_TO_BASE[selectedPort];
+
+    #ifndef NDEBUG
+    if(baseAddress == 0xFFFF) {
+        return;
+    }
+    #endif
+
+    // Shift by 8 if port is even (upper 8-bits)
+    if((selectedPort & 1) ^ 1) {
+        pinValues <<= 8;
+    }
+
+    HWREG16(baseAddress + OFS_PAOUT) = pinValues;
 }

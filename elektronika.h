@@ -7,6 +7,7 @@
 #include <stdbool.h>
 
 #include "driverlib.h"
+#include "driverlib_ng.h"
 #include "config.h"
 #include "utils.h"
 
