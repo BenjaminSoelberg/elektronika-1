@@ -1,4 +1,5 @@
-/Debug/
-/Release/
-/.launches/
-/ignored/
+/src/Debug/
+/src/Release/
+/src/.launches/
+/src/ignored/
+/sch/fp-info-cache

@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name hp-5082-7414)(type Legacy)(uri ${KIPRJMOD}/models/hp-5082-7414.lib)(options "")(descr ""))
+  (lib (name MSP430FR2433IRGET)(type Legacy)(uri ${KIPRJMOD}/models/MSP430FR2433IRGET.lib)(options "")(descr ""))
+)
