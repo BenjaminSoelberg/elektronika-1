@@ -25,28 +25,6 @@ F 3 "~" H 2750 3150 50  0001 C CNN
 	0    1    -1   0   
 $EndComp
 $Comp
-L Device:Battery_Cell BT1
-U 1 1 607D39F2
-P 1300 1350
-F 0 "BT1" H 1050 1500 50  0000 L CNN
-F 1 "3V CR2032" H 750 1350 50  0000 L CNN
-F 2 "Battery:BatteryHolder_Keystone_3002_1x2032" V 1300 1410 50  0001 C CNN
-F 3 "~" V 1300 1410 50  0001 C CNN
-	1    1300 1350
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR02
-U 1 1 607D5D9F
-P 1300 1500
-F 0 "#PWR02" H 1300 1250 50  0001 C CNN
-F 1 "GND" H 1305 1327 50  0000 C CNN
-F 2 "" H 1300 1500 50  0001 C CNN
-F 3 "" H 1300 1500 50  0001 C CNN
-	1    1300 1500
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:GND #PWR06
 U 1 1 607D64F4
 P 7950 3850
@@ -57,21 +35,6 @@ F 3 "" H 7950 3850 50  0001 C CNN
 	1    7950 3850
 	1    0    0    -1  
 $EndComp
-$Comp
-L power:+3V0 #PWR01
-U 1 1 607D8AD3
-P 1300 1100
-F 0 "#PWR01" H 1300 950 50  0001 C CNN
-F 1 "+3V0" H 1315 1273 50  0000 C CNN
-F 2 "" H 1300 1100 50  0001 C CNN
-F 3 "" H 1300 1100 50  0001 C CNN
-	1    1300 1100
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	1300 1450 1300 1500
-Wire Wire Line
-	1300 1100 1300 1150
 Text GLabel 8150 3100 2    50   Input ~ 0
 RST_SBWTDIO
 Text GLabel 9650 1100 0    50   Input ~ 0
@@ -165,17 +128,6 @@ F 3 "" H 3550 2000 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	3550 2000 3750 2000
-$Comp
-L Device:C_Small C1
-U 1 1 6081B29D
-P 1950 1300
-F 0 "C1" H 2042 1346 50  0000 L CNN
-F 1 "100nF low ESR" H 2042 1255 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 1950 1300 50  0001 C CNN
-F 3 "~" H 1950 1300 50  0001 C CNN
-	1    1950 1300
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	2750 3300 2750 3350
 Wire Wire Line
@@ -184,8 +136,6 @@ Wire Wire Line
 	2750 3000 2750 2950
 Wire Wire Line
 	2750 2950 3050 2950
-Wire Wire Line
-	1950 1400 1950 1450
 $Comp
 L Device:C_Small C2
 U 1 1 60869818
@@ -433,10 +383,10 @@ F 3 "~" H 10000 1400 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Text GLabel 9650 1300 0    50   Input ~ 0
-TXD
+BCLUART_TXD
 NoConn ~ 9800 1600
 Text GLabel 9650 1400 0    50   Input ~ 0
-RXD
+BCLUART_RXD
 Wire Wire Line
 	9650 1100 9800 1100
 Wire Wire Line
@@ -459,9 +409,9 @@ NoConn ~ 3750 3400
 NoConn ~ 3750 3500
 NoConn ~ 3750 3800
 Text GLabel 3550 3700 0    50   Input ~ 0
-TXD
+BCLUART_TXD
 Text GLabel 3550 3600 0    50   Input ~ 0
-RXD
+BCLUART_RXD
 NoConn ~ 3550 5600
 Wire Wire Line
 	3250 2950 3450 2950
@@ -476,14 +426,6 @@ Wire Wire Line
 Wire Wire Line
 	3450 3200 3750 3200
 Wire Wire Line
-	1300 1150 1950 1150
-Connection ~ 1300 1150
-Wire Wire Line
-	1950 1150 1950 1200
-Wire Wire Line
-	1300 1450 1950 1450
-Connection ~ 1300 1450
-Wire Wire Line
 	3550 3600 3750 3600
 Wire Wire Line
 	3550 3700 3750 3700
@@ -492,11 +434,11 @@ Wire Wire Line
 Wire Wire Line
 	8150 3100 7950 3100
 $Comp
-L MSP430FR2433IRGET:MSP430FR2433IRGET U?
+L MSP430FR2433IRGET:MSP430FR2433IRGET U1
 U 1 1 60A5CED8
 P 5850 2900
-F 0 "U?" H 5850 4188 60  0000 C CNN
-F 1 "MSP430FR2433IRGET" H 5850 4082 60  0000 C CNN
+F 0 "U1" H 5850 3900 60  0000 C CNN
+F 1 "MSP430FR2433IRGET" H 5850 3750 60  0000 C CNN
 F 2 "RGE0024G" H 5850 2840 60  0001 C CNN
 F 3 "" H 5850 2900 60  0000 C CNN
 	1    5850 2900
@@ -504,4 +446,101 @@ F 3 "" H 5850 2900 60  0000 C CNN
 $EndComp
 Wire Wire Line
 	7950 3800 7950 3850
+Wire Wire Line
+	1150 850  1550 850 
+Wire Wire Line
+	1150 1150 1550 1150
+Wire Wire Line
+	1950 1150 1950 1100
+Wire Wire Line
+	1950 850  1950 900 
+$Comp
+L Device:CP_Small C1
+U 1 1 60A6E5A2
+P 1550 1000
+F 0 "C1" H 1638 1046 50  0000 L CNN
+F 1 "10uF*" H 1638 955 50  0000 L CNN
+F 2 "" H 1550 1000 50  0001 C CNN
+F 3 "~" H 1550 1000 50  0001 C CNN
+	1    1550 1000
+	1    0    0    -1  
+$EndComp
+Connection ~ 1150 1150
+Connection ~ 1150 850 
+$Comp
+L Device:C_Small C2
+U 1 1 6081B29D
+P 1950 1000
+F 0 "C2" H 2042 1046 50  0000 L CNN
+F 1 "100nF*" H 2042 955 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 1950 1000 50  0001 C CNN
+F 3 "~" H 1950 1000 50  0001 C CNN
+	1    1950 1000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1150 800  1150 850 
+Wire Wire Line
+	1150 1150 1150 1200
+$Comp
+L power:+3V0 #PWR01
+U 1 1 607D8AD3
+P 1150 800
+F 0 "#PWR01" H 1150 650 50  0001 C CNN
+F 1 "+3V0" H 1165 973 50  0000 C CNN
+F 2 "" H 1150 800 50  0001 C CNN
+F 3 "" H 1150 800 50  0001 C CNN
+	1    1150 800 
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR02
+U 1 1 607D5D9F
+P 1150 1200
+F 0 "#PWR02" H 1150 950 50  0001 C CNN
+F 1 "GND" H 1155 1027 50  0000 C CNN
+F 2 "" H 1150 1200 50  0001 C CNN
+F 3 "" H 1150 1200 50  0001 C CNN
+	1    1150 1200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:Battery_Cell BT1
+U 1 1 607D39F2
+P 1150 1050
+F 0 "BT1" H 900 1200 50  0000 L CNN
+F 1 "3V CR2032" H 600 1050 50  0000 L CNN
+F 2 "Battery:BatteryHolder_Keystone_3002_1x2032" V 1150 1110 50  0001 C CNN
+F 3 "~" V 1150 1110 50  0001 C CNN
+	1    1150 1050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1550 850  1550 900 
+Connection ~ 1550 850 
+Wire Wire Line
+	1550 850  1950 850 
+Wire Wire Line
+	1550 1100 1550 1150
+Connection ~ 1550 1150
+Wire Wire Line
+	1550 1150 1950 1150
+Wire Notes Line
+	550  1450 550  550 
+Text Notes 1850 1400 0    50   ~ 0
+* Low ESR
+Wire Notes Line
+	2350 550  2350 1450
+Wire Notes Line
+	550  550  2350 550 
+Wire Notes Line
+	550  1450 2350 1450
+Wire Wire Line
+	7950 3500 7950 3600
+Connection ~ 7950 3800
+Connection ~ 7950 3600
+Wire Wire Line
+	7950 3600 7950 3800
+Text Notes 7050 6900 0    118  ~ 0
+Note: No battery inserted while programming.
 $EndSCHEMATC

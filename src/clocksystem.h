@@ -1,5 +1,5 @@
-#ifndef __DISPLAY_H__
-#define __DISPLAY_H__
+#ifndef __CLOCKSYSTEM_H__
+#define __CLOCKSYSTEM_H__
 
 #include "elektronika.h"
 
@@ -14,14 +14,9 @@ extern "C"
 {
 #endif
 
-#define AS1115_SLAVE_ADDRESS 0x00
-#define I2C_BASE EUSCI_B0_BASE
-
-extern void Display_init(void);
-extern void Display_start(void);
-extern void Display_stop(void);
-extern void Display_update(uint8_t *data);
-void Display_set_intensity(uint8_t intensity);
+extern void CS_init(void);
+extern void CS_start(void);
+extern void CS_stop(void);
 
 //*****************************************************************************
 //
@@ -32,4 +27,4 @@ void Display_set_intensity(uint8_t intensity);
 }
 #endif
 
-#endif /* __DISPLAY_H__ */
+#endif /* __CLOCKSYSTEM_H__ */
