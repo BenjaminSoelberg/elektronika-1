@@ -11,7 +11,6 @@
 #include "config.h"
 #include "utils.h"
 
-
 //*****************************************************************************
 //
 // If building with a C++ compiler, make all of the definitions in this header
@@ -22,13 +21,6 @@
 extern "C"
 {
 #endif
-
-/* HARDWARE TIMER ASSIGNMENT:
-     TA0CCR1: Used by the button driver
-     TA0CCR2: Unused
-     TA1CCR1: Used by the display driver to multiplex the segments
-     TA0CCR2: Used by the display driver to turn off the display when no buttons are pushed for a specified amount of time
- */
 
 //*****************************************************************************
 //

@@ -35,7 +35,7 @@ void Display_send(uint8_t command, uint8_t data)
 void Display_update(uint8_t *data)
 {
     memcpy(&screen, data, sizeof(screen));
-    for (int i = 0; i < sizeof(screen); i++) {
+    for (uint8_t i = 0; i < sizeof(screen); i++) {
         Display_send(CMD_DIGIT_BASE + i, screen[i]);
     }
 }

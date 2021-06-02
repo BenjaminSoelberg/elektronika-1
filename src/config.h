@@ -14,10 +14,10 @@ extern "C"
 
 #define CONFIG_LFO_SOURCE  CS_XT1CLK_SELECT
 #define CONFIG_LFO_HZ      32768
+
 #define CONFIG_RTC_SOURCE  RTC_CLOCKSOURCE_XT1CLK
 #define CONFIG_RTC_HZ      32768
-
-#define CONFIG_RTC_DEFAULT_START_TIME (1609459200+2208988800) // Fri Jan 01 2021 00:00:00 GMT+0000
+#define CONFIG_RTC_DEFAULT_START_TIME (1609459200 + 2208988800) // Fri Jan 01 2021 00:00:00 GMT+0000
 
 //*****************************************************************************
 //

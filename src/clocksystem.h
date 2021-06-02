@@ -14,9 +14,9 @@ extern "C"
 {
 #endif
 
-extern void CS_init(void);
-extern void CS_start(void);
-extern void CS_stop(void);
+extern void ClockSystem_init(void);
+extern void ClockSystem_start(void);
+extern void ClockSystem_stop(void);
 
 //*****************************************************************************
 //
