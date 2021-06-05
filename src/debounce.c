@@ -1,34 +1,53 @@
 #include "debounce.h"
 
-void update_button(uint8_t *button_history, bool state)
+// No sync needed within calls from the the interrupt function
+void update_button(uint8_t *button_history, bool button_state)
 {
-    *button_history = (*button_history & 0b10000000) | ((*button_history & 0b00111111) << 1) | state;
+    *button_history = (*button_history & MASK_STATE_BIT) | ((*button_history & (MASK_HISTORY_BITS >> 1)) << 1) | button_state;
 }
 
-bool is_button_up(uint8_t *button_history) //TODO: Not sure this works or how to use
+bool is_button_up(uint8_t *button_history)
 {
-    return *button_history & 0b10000000 == 0;
+    unsigned short state;
+    ENTER_CRITICAL_SECTION(state);
+    bool result = (*button_history & MASK_STATE_BIT) == 0;
+    EXIT_CRITICAL_SECTION(state);
+    return result;
 }
 
-bool is_button_down(uint8_t *button_history) //TODO: Not sure this works or how to use
+bool is_button_down(uint8_t *button_history)
 {
-    return *button_history & 0b10000000 > 0;
+    unsigned short state;
+    ENTER_CRITICAL_SECTION(state);
+    bool result = (*button_history & MASK_STATE_BIT) == MASK_STATE_BIT;
+    EXIT_CRITICAL_SECTION(state);
+    return result;
 }
 
+// No sync needed within calls from the the interrupt function
 bool is_button_pressed(uint8_t *button_history)
 {
+    bool result = false;
+//    unsigned short state;
+//    ENTER_CRITICAL_SECTION(state);
     if ((*button_history & MASK) == MASK_PRESSED) {
         *button_history = CONFIRMED_PRESS;
-        return true;
+        result = true;
     }
-    return false;
+//    EXIT_CRITICAL_SECTION(state);
+    return result;
 }
 
+// No sync needed within calls from the the interrupt function
 bool is_button_released(uint8_t *button_history)
 {
+    bool result = false;
+//    unsigned short state;
+//    ENTER_CRITICAL_SECTION(state);
     if ((*button_history & MASK) == MASK_RELEASED) {
         *button_history = CONFIRMED_RELEASE;
-        return true;
+        result = true;
     }
-    return false;
+//    EXIT_CRITICAL_SECTION(state);
+    return result;
 }

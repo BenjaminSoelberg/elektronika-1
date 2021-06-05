@@ -3,13 +3,12 @@
 
 volatile bool timer_running = false;
 
-#define BUTTON_TIMER_BLINK_P1_1
 #ifdef USE_LAUNCHPAD
 uint8_t button_bits[] =
-{
-    GPIO_PIN3,
-    GPIO_PIN7
-};
+        {
+        GPIO_PIN3,
+          GPIO_PIN7
+        };
 #else
 uint8_t button_bits[] =
 {
@@ -23,23 +22,31 @@ uint8_t button_bits[] =
 
 uint8_t button_history[sizeof(button_bits)];
 
-bool Buttons_is_button_up(BUTTONS button) {
-    if (button < 0) return true; // Ignore, button always up
+bool Buttons_is_button_up(BUTTONS button)
+{
+    if (button < 0)
+        return true; // Ignore, button always up
     return is_button_up(&button_history[button]);
 }
 
-bool Buttons_is_button_down(BUTTONS button) {
-    if (button < 0) return false; // Ignore, button always up
+bool Buttons_is_button_down(BUTTONS button)
+{
+    if (button < 0)
+        return false; // Ignore, button always up
     return is_button_down(&button_history[button]);
 }
 
-bool Buttons_is_button_pressed(BUTTONS button) {
-    if (button < 0) return false; // Ignore, button always up
+bool Buttons_is_button_pressed(BUTTONS button)
+{
+    if (button < 0)
+        return false; // Ignore, button always up
     return is_button_pressed(&button_history[button]);
 }
 
-bool Buttons_is_button_released(BUTTONS button) {
-    if (button < 0) return false; // Ignore, button always up
+bool Buttons_is_button_released(BUTTONS button)
+{
+    if (button < 0)
+        return false; // Ignore, button always up
     return is_button_released(&button_history[button]);
 }
 
@@ -51,13 +58,14 @@ void Buttons_init(void)
     GPIO_selectInterruptEdge(BUTTONS_PORT, BUTTON_PINS, GPIO_HIGH_TO_LOW_TRANSITION);
 
     Timer_A_initUpModeParam parameters = {
-       .clockSource = TIMER_A_CLOCKSOURCE_ACLK,
-       .clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_1,
-       .timerPeriod = (CONFIG_LFO_HZ - 1) / BUTTONS_POLL_HZ,
-       .timerInterruptEnable_TAIE = TIMER_A_TAIE_INTERRUPT_ENABLE,
-       .captureCompareInterruptEnable_CCR0_CCIE = TIMER_A_CCIE_CCR0_INTERRUPT_DISABLE,
-       .timerClear = TIMER_A_DO_CLEAR,
-       .startTimer = false
+                                           .clockSource = TIMER_A_CLOCKSOURCE_ACLK,
+                                           .clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_1,
+                                           .timerPeriod = (CONFIG_LFO_HZ - 1) / BUTTONS_POLL_HZ,
+                                           .timerInterruptEnable_TAIE = TIMER_A_TAIE_INTERRUPT_ENABLE,
+                                           .captureCompareInterruptEnable_CCR0_CCIE =
+                                                   TIMER_A_CCIE_CCR0_INTERRUPT_DISABLE,
+                                           .timerClear = TIMER_A_DO_CLEAR,
+                                           .startTimer = false
     };
 
     Timer_A_initUpMode(BUTTONS_TIMER_BASE, &parameters);
@@ -117,15 +125,13 @@ __interrupt void Buttons_pressed_isr(void)
 #pragma vector=BUTTONS_TIMER_VECTOR
 __interrupt void Buttons_timer_isr(void)
 {
-#ifdef BUTTON_TIMER_BLINK_P1_1
-    GPIO_setAsOutputPin(GPIO_PORT_P1, BIT1);
-    GPIO_toggleOutputOnPin(GPIO_PORT_P1, BIT1);
-#endif
-
     bool all_released = true;
     uint8_t buttons = GPIO_getInputPinValues(BUTTONS_PORT, BUTTON_PINS);
     for (uint8_t i = 0; i < sizeof(button_bits); i++) {
         update_button(&button_history[i], (buttons & button_bits[i]) == 0);
+        // I'm not very pleased with the two below calls but it saves the main loop from calling them.
+        is_button_pressed(&button_history[i]);
+        is_button_released(&button_history[i]);
         if (button_history[i] != CONFIRMED_RELEASE) {
             all_released = false;
         }
@@ -139,3 +145,4 @@ __interrupt void Buttons_timer_isr(void)
 
     Timer_A_clearTimerInterrupt(BUTTONS_TIMER_BASE);
 }
+

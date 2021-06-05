@@ -48,21 +48,12 @@ int main(void)
     __enable_interrupt();
 
     while (true) {
-        __low_power_mode_3(); //TODO: How can we see if we enter 3.5 with no buttons pressed ?
-
-        GPIO_setAsOutputPin(GPIO_PORT_P1, BIT0);
-        GPIO_toggleOutputOnPin(GPIO_PORT_P1, BIT0);
-
-//
-//        if (Buttons_is_button_pressed(BUTTON_SET_H)) {
-//            GPIO_setAsOutputPin(GPIO_PORT_P1, BIT0);
-//            GPIO_setOutputHighOnPin(GPIO_PORT_P1, BIT0);
-//            while (!Buttons_is_button_released(BUTTON_SET_H)) {
-//                __no_operation();
-//            }
-//            GPIO_setAsOutputPin(GPIO_PORT_P1, BIT0);
-//            GPIO_setOutputLowOnPin(GPIO_PORT_P1, BIT0);
-//            Buttons_timer_stop();
-//        }
+//        __low_power_mode_3(); //TODO: How can we see if we enter 3.5 with no buttons pressed ?
+        if (Buttons_is_button_down(BUTTON_SET_H)) {
+                GPIO_setAsOutputPin(GPIO_PORT_P1, BIT0);
+                GPIO_toggleOutputOnPin(GPIO_PORT_P1, BIT0);
+                //__no_operation();
+        }
     }
 }
+

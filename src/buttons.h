@@ -16,7 +16,7 @@ extern "C"
 
 #define USE_LAUNCHPAD
 
-#define BUTTONS_POLL_HZ 20 /* (1/20*3) 150ms minimal response time. Worst case (1/20*8) 400ms if debounce takes longer than (1/20) 5ms. See MASK. */
+#define BUTTONS_POLL_HZ 30 /* (1/30*3) 100ms minimal response time. Worst case (1/30*7) 233ms if debounce takes longer than (1/30) 3.33ms. See MASK. */
 #define BUTTONS_TIMER_BASE TIMER_A1_BASE
 #define BUTTONS_TIMER_VECTOR TIMER1_A1_VECTOR
 
