@@ -17,13 +17,3 @@ void ClockSystem_init(void)
     //CS_initClockSignal(CS_MCLK, CONFIG_LFO_SOURCE, CS_CLOCK_DIVIDER_1);
     //TODO: Look into what clocks can be off CS_turnOffSMCLK();
 }
-
-/*
-void ClockSystem_start(void)
-{
-}
-
-void ClockSystem_stop(void)
-{
-}
-*/

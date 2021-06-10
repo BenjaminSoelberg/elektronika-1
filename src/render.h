@@ -1,5 +1,5 @@
-#ifndef __CLOCKSYSTEM_H__
-#define __CLOCKSYSTEM_H__
+#ifndef __RENDER_H__
+#define __RENDER_H__
 
 #include "elektronika.h"
 
@@ -14,7 +14,8 @@ extern "C"
 {
 #endif
 
-extern void ClockSystem_init(void);
+extern uint8_t Render_7_segment(uint8_t ch, bool dp);
+extern uint8_t Render_7_segment_nz(uint8_t ch, bool dp);
 
 //*****************************************************************************
 //
@@ -25,4 +26,4 @@ extern void ClockSystem_init(void);
 }
 #endif
 
-#endif /* __CLOCKSYSTEM_H__ */
+#endif /* __RENDER_H__ */

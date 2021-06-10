@@ -20,8 +20,9 @@ extern "C"
 extern void Display_init(void);
 extern void Display_start(void);
 extern void Display_stop(void);
-extern void Display_update(uint8_t *data);
+extern void Display_update_screen(void);
 extern void Display_set_intensity(uint8_t intensity);
+extern uint8_t Display_get_screen(uint8_t **screen_ptr);
 
 //*****************************************************************************
 //

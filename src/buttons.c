@@ -5,10 +5,10 @@ volatile bool timer_running = false;
 
 #ifdef USE_LAUNCHPAD
 uint8_t button_bits[] =
-        {
-        GPIO_PIN3,
-          GPIO_PIN7
-        };
+{
+    GPIO_PIN3,
+    GPIO_PIN7
+};
 #else
 uint8_t button_bits[] =
 {
@@ -24,30 +24,42 @@ uint8_t button_history[sizeof(button_bits)];
 
 bool Buttons_is_button_up(BUTTONS button)
 {
-    if (button < 0)
-        return true; // Ignore, button always up
+    if (button == IGNORE_BUTTON) {
+        return true;
+    }
     return is_button_up(&button_history[button]);
 }
 
 bool Buttons_is_button_down(BUTTONS button)
 {
-    if (button < 0)
-        return false; // Ignore, button always up
+    if (button == IGNORE_BUTTON) {
+        return false;
+    }
     return is_button_down(&button_history[button]);
 }
 
 bool Buttons_is_button_pressed(BUTTONS button)
 {
-    if (button < 0)
-        return false; // Ignore, button always up
+    if (button == IGNORE_BUTTON) {
+        return false;
+    }
     return is_button_pressed(&button_history[button]);
 }
 
 bool Buttons_is_button_released(BUTTONS button)
 {
-    if (button < 0)
-        return false; // Ignore, button always up
+    if (button == IGNORE_BUTTON) {
+        return false;
+    }
     return is_button_released(&button_history[button]);
+}
+
+void Buttons_clear_button(BUTTONS button)
+{
+    if (button == IGNORE_BUTTON) {
+        return;
+    }
+    clear_button(&button_history[button]);
 }
 
 void Buttons_timer_stop(void);
@@ -58,14 +70,14 @@ void Buttons_init(void)
     GPIO_selectInterruptEdge(BUTTONS_PORT, BUTTON_PINS, GPIO_HIGH_TO_LOW_TRANSITION);
 
     Timer_A_initUpModeParam parameters = {
-                                           .clockSource = TIMER_A_CLOCKSOURCE_ACLK,
-                                           .clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_1,
-                                           .timerPeriod = (CONFIG_LFO_HZ - 1) / BUTTONS_POLL_HZ,
-                                           .timerInterruptEnable_TAIE = TIMER_A_TAIE_INTERRUPT_ENABLE,
-                                           .captureCompareInterruptEnable_CCR0_CCIE =
-                                                   TIMER_A_CCIE_CCR0_INTERRUPT_DISABLE,
-                                           .timerClear = TIMER_A_DO_CLEAR,
-                                           .startTimer = false
+       .clockSource = TIMER_A_CLOCKSOURCE_ACLK,
+       .clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_1,
+       .timerPeriod = (CONFIG_LFO_HZ - 1) / BUTTONS_POLL_HZ,
+       .timerInterruptEnable_TAIE = TIMER_A_TAIE_INTERRUPT_ENABLE,
+       .captureCompareInterruptEnable_CCR0_CCIE =
+       TIMER_A_CCIE_CCR0_INTERRUPT_DISABLE,
+       .timerClear = TIMER_A_DO_CLEAR,
+       .startTimer = false
     };
 
     Timer_A_initUpMode(BUTTONS_TIMER_BASE, &parameters);
@@ -145,4 +157,3 @@ __interrupt void Buttons_timer_isr(void)
 
     Timer_A_clearTimerInterrupt(BUTTONS_TIMER_BASE);
 }
-

@@ -29,6 +29,7 @@ extern bool is_button_up(uint8_t *button_history);
 extern bool is_button_down(uint8_t *button_history);
 extern bool is_button_pressed(uint8_t *button_history);
 extern bool is_button_released(uint8_t *button_history);
+extern void clear_button(uint8_t *button_history);
 
 //*****************************************************************************
 //
