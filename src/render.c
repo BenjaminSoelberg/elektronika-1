@@ -1,7 +1,4 @@
 #include "render.h"
-#ifndef HAS_AS1115
-#include <stdio.h>
-#endif
 
 uint8_t Render_7_segment(uint8_t ch, bool dp)
 {

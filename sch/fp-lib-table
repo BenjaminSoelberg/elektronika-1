@@ -1,3 +1,3 @@
 (fp_lib_table
-  (lib (name models)(type KiCad)(uri ${KIPRJMOD}/models)(options "")(descr ""))
+  (lib (name Elektronika)(type KiCad)(uri ${KIPRJMOD}/Elektronika.pretty)(options "")(descr ""))
 )
