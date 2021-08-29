@@ -9,7 +9,6 @@
 
 volatile unsigned int i = 0;
 
-//#define HAS_AS1115
 
 void pre_init(void)
 {
@@ -20,9 +19,9 @@ void pre_init(void)
     PMM_unlockLPM5();
 
     // Unconnected pins should be set to output mode
-    GPIO_setAsOutputPin(GPIO_PORT_P1, BIT7);
-    GPIO_setAsOutputPin(GPIO_PORT_P2, BIT2 | BIT3 | BIT4 | BIT7);
-    GPIO_setAsOutputPin(GPIO_PORT_P3, BIT0 | BIT1 | BIT2);
+    GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN7);
+    GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN2 | GPIO_PIN3 | GPIO_PIN4 | GPIO_PIN7);
+    GPIO_setAsOutputPin(GPIO_PORT_P3, GPIO_PIN0 | GPIO_PIN1 | GPIO_PIN2);
 }
 
 void render_current_time(void)

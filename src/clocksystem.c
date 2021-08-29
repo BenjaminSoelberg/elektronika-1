@@ -12,7 +12,7 @@ void ClockSystem_init(void)
 
     CS_turnOnXT1LF(CS_XT1_DRIVE_2); // Use CC7V-T1A-32.768kHz-12.5pF-20PPM-TA-QC. See slaa367
     CS_initClockSignal(CS_ACLK, CONFIG_LFO_SOURCE, CS_CLOCK_DIVIDER_1);
-
+    CS_enableClockRequest(CS_MODOSC);
     //TODO: enable this for extra power save... but will the display driver have enough time... test it!
     //CS_initClockSignal(CS_MCLK, CONFIG_LFO_SOURCE, CS_CLOCK_DIVIDER_1);
     //TODO: Look into what clocks can be off CS_turnOffSMCLK();

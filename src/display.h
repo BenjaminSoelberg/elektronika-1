@@ -17,12 +17,12 @@ extern "C"
 #define AS1115_SLAVE_ADDRESS 0x00
 #define I2C_BASE EUSCI_B0_BASE
 
-extern void Display_init(void);
-extern void Display_start(void);
-extern void Display_stop(void);
-extern void Display_update_screen(void);
-extern void Display_set_intensity(uint8_t intensity);
-extern uint8_t Display_get_screen(uint8_t **screen_ptr);
+void Display_init(void);
+void Display_start(void);
+void Display_stop(void);
+void Display_update_screen(void);
+void Display_set_intensity(uint8_t intensity);
+uint8_t Display_get_screen(uint8_t **screen_ptr);
 
 //*****************************************************************************
 //

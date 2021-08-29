@@ -66,20 +66,23 @@ void Display_init(void)
 #ifndef HAS_AS1115
     return;
 #else
+    EUSCI_B_I2C_disable(I2C_BASE);
     EUSCI_B_I2C_initMasterParam parameters = {
        .selectClockSource = EUSCI_B_I2C_CLOCKSOURCE_MODCLK,
-       .i2cClk = CS_getMCLK(),
+       .i2cClk = 5000000,
        .dataRate = EUSCI_B_I2C_SET_DATA_RATE_100KBPS,
        .byteCounterThreshold = 0,
        .autoSTOPGeneration = EUSCI_B_I2C_NO_AUTO_STOP,
     };
 
-    GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P1, GPIO_PIN2 + GPIO_PIN3, GPIO_SECONDARY_MODULE_FUNCTION);
     EUSCI_B_I2C_initMaster(I2C_BASE, &parameters);
     EUSCI_B_I2C_setSlaveAddress(I2C_BASE, AS1115_SLAVE_ADDRESS);
+    GPIO_setAsPeripheralModuleFunctionOutputPin(GPIO_PORT_P1, GPIO_PIN2 | GPIO_PIN3, GPIO_PRIMARY_MODULE_FUNCTION);
+    EUSCI_B_I2C_enable(I2C_BASE);
     Display_send(CMD_DECODE_MODE, ARG_DECODE_MODE_NONE);
     Display_send(CMD_SCAN_LIMIT, ARG_SCAN_LIMIT_4_DIGITS);
     Display_set_intensity(ARG_GLOBAL_INTENSITY_MIN);
+    Display_stop();
 #endif
 }
 

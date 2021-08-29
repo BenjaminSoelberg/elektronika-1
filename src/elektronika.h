@@ -10,7 +10,7 @@
 #include "driverlib_ng.h"
 #include "config.h"
 #include "utils.h"
-
+#define HAS_AS1115
 //*****************************************************************************
 //
 // If building with a C++ compiler, make all of the definitions in this header
