@@ -69,7 +69,7 @@ void Display_init(void)
     EUSCI_B_I2C_disable(I2C_BASE);
     EUSCI_B_I2C_initMasterParam parameters = {
        .selectClockSource = EUSCI_B_I2C_CLOCKSOURCE_MODCLK,
-       .i2cClk = 5000000,
+       .i2cClk = CONFIG_OSCMOD_HZ,
        .dataRate = EUSCI_B_I2C_SET_DATA_RATE_100KBPS,
        .byteCounterThreshold = 0,
        .autoSTOPGeneration = EUSCI_B_I2C_NO_AUTO_STOP,

@@ -4,17 +4,6 @@
 #include "elektronika.h"
 #include <time.h>
 
-//*****************************************************************************
-//
-// If building with a C++ compiler, make all of the definitions in this header
-// have a C binding.
-//
-//*****************************************************************************
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
 #define MIN_YEAR (2020-1900)
 #define MAX_YEAR (2035-1900)
 
@@ -34,26 +23,17 @@ extern "C"
 #define MAX_SEC 59
 
 extern uint32_t current_time;
-extern void RealtimeClock_init(void);
-extern void RealtimeClock_start(void);
-extern void RealtimeClock_stop(void);
-extern struct tm* RealtimeClock_getCurrentTime(void);
-extern void RealtimeClock_setCurrentTime(struct tm *time);
-extern void RealtimeClock_add(long delta);
-extern void RealtimeClock_add_years(long delta);
-extern void RealtimeClock_add_months(long delta);
-extern void RealtimeClock_add_days(long delta);
-extern void RealtimeClock_add_hours(long delta);
-extern void RealtimeClock_add_minutes(long delta);
-extern void RealtimeClock_add_secounds(long delta);
-
-//*****************************************************************************
-//
-// Mark the end of the C bindings section for C++ compilers.
-//
-//*****************************************************************************
-#ifdef __cplusplus
-}
-#endif
+void RealtimeClock_init(void);
+void RealtimeClock_start(void);
+void RealtimeClock_stop(void);
+struct tm* RealtimeClock_getCurrentTime(void);
+void RealtimeClock_setCurrentTime(struct tm *time);
+void RealtimeClock_add(long delta);
+void RealtimeClock_add_years(long delta);
+void RealtimeClock_add_months(long delta);
+void RealtimeClock_add_days(long delta);
+void RealtimeClock_add_hours(long delta);
+void RealtimeClock_add_minutes(long delta);
+void RealtimeClock_add_secounds(long delta);
 
 #endif /* __RTCCLOCK_H__ */

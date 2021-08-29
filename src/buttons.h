@@ -3,19 +3,6 @@
 
 #include "elektronika.h"
 
-//*****************************************************************************
-//
-// If building with a C++ compiler, make all of the definitions in this header
-// have a C binding.
-//
-//*****************************************************************************
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
-#define USE_LAUNCHPAD
-
 #define BUTTONS_POLL_HZ 30 /* (1/30*3) 100ms minimal response time. Worst case (1/30*7) 233ms if debounce takes longer than (1/30) 3.33ms. See MASK. */
 #define BUTTONS_TIMER_BASE TIMER_A1_BASE
 #define BUTTONS_TIMER_VECTOR TIMER1_A1_VECTOR
@@ -45,24 +32,15 @@ typedef enum
 } BUTTONS;
 #endif
 
-extern void Buttons_init(void);
-extern void Buttons_start(void);
-extern void Buttons_stop(void);
-extern void Buttons_timer_stop(void);
+void Buttons_init(void);
+void Buttons_start(void);
+void Buttons_stop(void);
+void Buttons_timer_stop(void);
 
-extern bool Buttons_is_button_up(BUTTONS button);
-extern bool Buttons_is_button_down(BUTTONS button);
-extern bool Buttons_is_button_pressed(BUTTONS button);
-extern bool Buttons_is_button_released(BUTTONS button);
-extern void Buttons_clear_button(BUTTONS button);
-
-//*****************************************************************************
-//
-// Mark the end of the C bindings section for C++ compilers.
-//
-//*****************************************************************************
-#ifdef __cplusplus
-}
-#endif
+bool Buttons_is_button_up(BUTTONS button);
+bool Buttons_is_button_down(BUTTONS button);
+bool Buttons_is_button_pressed(BUTTONS button);
+bool Buttons_is_button_released(BUTTONS button);
+void Buttons_clear_button(BUTTONS button);
 
 #endif /* __BUTTONS_H__ */

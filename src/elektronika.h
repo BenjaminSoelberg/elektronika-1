@@ -10,25 +10,8 @@
 #include "driverlib_ng.h"
 #include "config.h"
 #include "utils.h"
-#define HAS_AS1115
-//*****************************************************************************
-//
-// If building with a C++ compiler, make all of the definitions in this header
-// have a C binding.
-//
-//*****************************************************************************
-#ifdef __cplusplus
-extern "C"
-{
-#endif
 
-//*****************************************************************************
-//
-// Mark the end of the C bindings section for C++ compilers.
-//
-//*****************************************************************************
-#ifdef __cplusplus
-}
-#endif
+#define HAS_AS1115
+#define USE_LAUNCHPAD
 
 #endif /* ELEKTRONIKA_H_ */

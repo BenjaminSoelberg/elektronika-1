@@ -3,26 +3,7 @@
 
 #include "driverlib.h"
 
-//*****************************************************************************
-//
-// If building with a C++ compiler, make all of the definitions in this header
-// have a C binding.
-//
-//*****************************************************************************
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
-extern uint8_t GPIO_getInputPinValues(uint8_t selectedPort, uint8_t selectedPins);
-extern void GPIO_setOutputPinsOnPort(uint8_t selectedPort, uint8_t pinValues);
-//*****************************************************************************
-//
-// Mark the end of the C bindings section for C++ compilers.
-//
-//*****************************************************************************
-#ifdef __cplusplus
-}
-#endif
+uint8_t GPIO_getInputPinValues(uint8_t selectedPort, uint8_t selectedPins);
+void GPIO_setOutputPinsOnPort(uint8_t selectedPort, uint8_t pinValues);
 
 #endif /* __DRIVERLIB_NG_H__ */
