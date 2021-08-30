@@ -15,10 +15,10 @@ uint8_t Render_7_segment(uint8_t ch, bool dp)
         result = 0b00110000;
         break;
     case 2:
-        result = 0b01100111;
+        result = 0b01101101;
         break;
     case 3:
-        result = 0b11110001;
+        result = 0b01111001;
         break;
     case 4:
         result = 0b00110011;
