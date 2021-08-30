@@ -4,18 +4,25 @@
 #include "stdio.h"
 #endif
 
-#define CMD_DIGIT_BASE 0x00
+#define CMD_DIGIT_BASE 0x01
 
 #define CMD_DECODE_MODE 0x09
 #define ARG_DECODE_MODE_NONE 0x00
 
 #define CMD_GLOBAL_INTENSITY 0x0A
 #define ARG_GLOBAL_INTENSITY_MIN 0x00
+#define ARG_GLOBAL_INTENSITY_NOR 0x07
 #define ARG_GLOBAL_INTENSITY_MAX 0x0E
 
 #define CMD_SCAN_LIMIT 0x0B
+#define ARG_SCAN_LIMIT_1_DIGITS 0x00
 #define ARG_SCAN_LIMIT_2_DIGITS 0x01
+#define ARG_SCAN_LIMIT_3_DIGITS 0x02
 #define ARG_SCAN_LIMIT_4_DIGITS 0x03
+#define ARG_SCAN_LIMIT_5_DIGITS 0x04
+#define ARG_SCAN_LIMIT_6_DIGITS 0x05
+#define ARG_SCAN_LIMIT_7_DIGITS 0x06
+#define ARG_SCAN_LIMIT_8_DIGITS 0x07
 
 #define CMD_POWER 0x0C
 #define ARG_POWER_OFF 0x00
@@ -81,7 +88,7 @@ void Display_init(void)
     EUSCI_B_I2C_enable(I2C_BASE);
     Display_send(CMD_DECODE_MODE, ARG_DECODE_MODE_NONE);
     Display_send(CMD_SCAN_LIMIT, ARG_SCAN_LIMIT_4_DIGITS);
-    Display_set_intensity(ARG_GLOBAL_INTENSITY_MIN);
+    Display_set_intensity(ARG_GLOBAL_INTENSITY_NOR);
     Display_stop();
 #endif
 }

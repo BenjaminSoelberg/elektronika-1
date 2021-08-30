@@ -24,6 +24,20 @@ void pre_init(void)
     GPIO_setAsOutputPin(GPIO_PORT_P3, GPIO_PIN0 | GPIO_PIN1 | GPIO_PIN2);
 }
 
+#ifdef DEBUG_SHOW_MM_SS
+void render_current_mm_ss(void)
+{
+    uint8_t *screen;
+    Display_get_screen(&screen);
+    struct tm *time = RealtimeClock_getCurrentTime();
+
+    screen[0] = Render_7_segment(time->tm_min / 10, false);
+    screen[1] = Render_7_segment(time->tm_min % 10, true);
+    screen[2] = Render_7_segment(time->tm_sec / 10, false);
+    screen[3] = Render_7_segment(time->tm_sec % 10, false);
+}
+#endif
+
 void render_current_time(void)
 {
     uint8_t *screen;
@@ -145,10 +159,17 @@ int main(void)
     Buttons_start();
 
     __enable_interrupt();
-
+#ifdef DEBUG_SHOW_MM_SS
+    Display_start();
+    while (true) {
+        render_current_mm_ss();
+        Display_update_screen();
+    }
+#else
     while (true) {
         __low_power_mode_3(); //TODO: How can we see if we enter 3.5 with no buttons pressed ?
         run();
     }
+#endif
 }
 
