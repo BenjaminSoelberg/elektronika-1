@@ -68,6 +68,15 @@ void Display_update_screen(void)
 #endif
 }
 
+void Display_clear(void)
+{
+#ifdef HAS_AS1115
+    for (uint8_t i = 0; i < sizeof(screen); i++) {
+        Display_send(CMD_DIGIT_BASE + i, 0);
+    }
+#endif
+}
+
 void Display_init(void)
 {
 #ifndef HAS_AS1115
@@ -102,12 +111,15 @@ void Display_set_intensity(uint8_t intensity)
 #endif
 }
 
-void Display_start(void)
+void Display_start(bool clear)
 {
 #ifndef HAS_AS1115
     return;
 #else
     EUSCI_B_I2C_enable(I2C_BASE);
+    if (clear) {
+        Display_clear();
+    }
     Display_send(CMD_POWER, ARG_POWER_ON);
 #endif
 }

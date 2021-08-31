@@ -128,7 +128,7 @@ void handle_year_button(void)
 
 void run(void)
 {
-    Display_start();
+    Display_start(CLEAR);
 
     if (Buttons_is_button_down(BUTTON_TIME)) {
         handle_time_button();
@@ -159,6 +159,7 @@ int main(void)
     Buttons_start();
 
     __enable_interrupt();
+
 #ifdef DEBUG_SHOW_MM_SS
     Display_start();
     while (true) {
