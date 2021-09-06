@@ -3,13 +3,6 @@
 
 volatile bool timer_running = false;
 
-#ifdef USE_LAUNCHPAD
-uint8_t button_bits[] =
-{
-    GPIO_PIN3,
-    GPIO_PIN7
-};
-#else
 uint8_t button_bits[] =
 {
     GPIO_PIN0,
@@ -18,7 +11,6 @@ uint8_t button_bits[] =
     GPIO_PIN5,
     GPIO_PIN6
 };
-#endif
 
 uint8_t button_history[sizeof(button_bits)];
 

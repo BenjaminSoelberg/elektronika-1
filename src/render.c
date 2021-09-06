@@ -2,9 +2,6 @@
 
 uint8_t Render_7_segment(uint8_t ch, bool dp)
 {
-#ifndef HAS_AS1115
-    return ch+48;
-#else
     uint8_t result;
     switch (ch)
     {
@@ -48,17 +45,10 @@ uint8_t Render_7_segment(uint8_t ch, bool dp)
     }
 
     return result;
-#endif
 }
 
 uint8_t Render_7_segment_nz(uint8_t ch, bool dp)
 {
-#ifndef HAS_AS1115
-    if (ch == 0) {
-        return ' ';
-    }
-    return Render_7_segment(ch, dp);
-#else
     if (ch == 0) {
         if (dp) {
             return 0b10000000;
@@ -67,5 +57,4 @@ uint8_t Render_7_segment_nz(uint8_t ch, bool dp)
     }
 
     return Render_7_segment(ch, dp);
-#endif
 }

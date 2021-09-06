@@ -1,8 +1,5 @@
 #include "display.h"
 #include "eusci_b_i2c.h"
-#ifndef HAS_AS1115
-#include "stdio.h"
-#endif
 
 #define CMD_DIGIT_BASE 0x01
 
@@ -38,9 +35,6 @@ uint8_t Display_get_screen(uint8_t **screen_ptr)
 
 void Display_send(uint8_t command, uint8_t data)
 {
-#ifndef HAS_AS1115
-    return;
-#else
     EUSCI_B_I2C_setMode(I2C_BASE, EUSCI_B_I2C_TRANSMIT_MODE);
     EUSCI_B_I2C_masterSendStart(I2C_BASE);
     EUSCI_B_I2C_masterSendMultiByteNext(I2C_BASE, command);
@@ -49,39 +43,24 @@ void Display_send(uint8_t command, uint8_t data)
     while (EUSCI_B_I2C_isBusBusy(I2C_BASE)) {
         __no_operation();
     }
-#endif
 }
 
 void Display_update_screen(void)
 {
-#ifndef HAS_AS1115
-    putchar(screen[0]);
-    putchar(screen[1]);
-    putchar(screen[2]);
-    putchar(screen[3]);
-    putchar('\n');
-    return;
-#else
     for (uint8_t i = 0; i < sizeof(screen); i++) {
         Display_send(CMD_DIGIT_BASE + i, screen[i]);
     }
-#endif
 }
 
 void Display_clear(void)
 {
-#ifdef HAS_AS1115
     for (uint8_t i = 0; i < sizeof(screen); i++) {
         Display_send(CMD_DIGIT_BASE + i, 0);
     }
-#endif
 }
 
 void Display_init(void)
 {
-#ifndef HAS_AS1115
-    return;
-#else
     EUSCI_B_I2C_disable(I2C_BASE);
     EUSCI_B_I2C_initMasterParam parameters = {
        .selectClockSource = EUSCI_B_I2C_CLOCKSOURCE_MODCLK,
@@ -99,37 +78,24 @@ void Display_init(void)
     Display_send(CMD_SCAN_LIMIT, ARG_SCAN_LIMIT_4_DIGITS);
     Display_set_intensity(ARG_GLOBAL_INTENSITY_NOR);
     Display_stop();
-#endif
 }
 
 void Display_set_intensity(uint8_t intensity)
 {
-#ifndef HAS_AS1115
-    return;
-#else
     Display_send(CMD_GLOBAL_INTENSITY, intensity); // Between 0 and 0x0f (actually 0x0e)
-#endif
 }
 
 void Display_start(bool clear)
 {
-#ifndef HAS_AS1115
-    return;
-#else
     EUSCI_B_I2C_enable(I2C_BASE);
     if (clear) {
         Display_clear();
     }
     Display_send(CMD_POWER, ARG_POWER_ON);
-#endif
 }
 
 void Display_stop(void)
 {
-#ifndef HAS_AS1115
-    return;
-#else
     Display_send(CMD_POWER, ARG_POWER_OFF);
     EUSCI_B_I2C_disable(I2C_BASE);
-#endif
 }

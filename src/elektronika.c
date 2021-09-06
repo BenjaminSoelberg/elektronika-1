@@ -20,12 +20,11 @@ void pre_init(void)
 
     // Unconnected pins should be set to output mode
     GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN7);
-    GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN2 | GPIO_PIN3 | GPIO_PIN4 | GPIO_PIN7);
+    GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN2 | GPIO_PIN3 | GPIO_PIN4 | GPIO_PIN5 | GPIO_PIN6 | GPIO_PIN7);
     GPIO_setAsOutputPin(GPIO_PORT_P3, GPIO_PIN0 | GPIO_PIN1 | GPIO_PIN2);
 }
 
-#ifdef DEBUG_SHOW_MM_SS
-void render_current_mm_ss(void)
+void test_render_current_mm_ss(void)
 {
     uint8_t *screen;
     Display_get_screen(&screen);
@@ -36,7 +35,6 @@ void render_current_mm_ss(void)
     screen[2] = Render_7_segment(time->tm_sec / 10, false);
     screen[3] = Render_7_segment(time->tm_sec % 10, false);
 }
-#endif
 
 void render_current_time(void)
 {
@@ -160,17 +158,9 @@ int main(void)
 
     __enable_interrupt();
 
-#ifdef DEBUG_SHOW_MM_SS
-    Display_start();
-    while (true) {
-        render_current_mm_ss();
-        Display_update_screen();
-    }
-#else
     while (true) {
         __low_power_mode_3(); //TODO: How can we see if we enter 3.5 with no buttons pressed ?
         run();
     }
-#endif
 }
 

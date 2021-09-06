@@ -11,8 +11,4 @@
 #include "config.h"
 #include "utils.h"
 
-#define HAS_AS1115
-#define USE_LAUNCHPAD
-//#define DEBUG_SHOW_MM_SS
-
 #endif /* ELEKTRONIKA_H_ */
