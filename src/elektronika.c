@@ -61,6 +61,19 @@ void render_current_year(void)
     }
 }
 
+void handle_set_h_button(void)
+{
+    while (Buttons_is_button_down(BUTTON_SET_H))
+    {
+        if (Buttons_is_button_down(BUTTON_SET_L)) {
+            Buttons_clear_button(BUTTON_SET_L);
+            Display_add_intensity(1);
+        }
+        render_current_time();
+        Display_update_screen();
+    }
+}
+
 void handle_time_button(void)
 {
     while (Buttons_is_button_down(BUTTON_TIME))
@@ -116,7 +129,10 @@ void run(void)
 {
     Display_start(CLEAR);
 
-    if (Buttons_is_button_down(BUTTON_TIME)) {
+    if (Buttons_is_button_down(BUTTON_SET_H)) {
+        handle_set_h_button();
+    }
+    else if (Buttons_is_button_down(BUTTON_TIME)) {
         handle_time_button();
     }
     else if (Buttons_is_button_down(BUTTON_DATE)) {

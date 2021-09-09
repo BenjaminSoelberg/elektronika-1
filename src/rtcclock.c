@@ -5,7 +5,6 @@
 #pragma PERSISTENT(current_time)
 time_t current_time = CONFIG_RTC_DEFAULT_START_TIME;
 
-
 void RealtimeClock_save(time_t new_time)
 {
     current_time = new_time;

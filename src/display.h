@@ -14,7 +14,8 @@ void Display_stop(void);
 void Display_clear(void);
 void Display_fill(uint8_t pattern);
 void Display_update_screen(void);
-void Display_set_intensity(uint8_t intensity);
+void Display_add_intensity(uint8_t delta);
+void Display_send_intensity();
 uint8_t Display_get_screen(uint8_t **screen_ptr);
 
 #endif /* __DISPLAY_H__ */

@@ -25,6 +25,9 @@
 #define ARG_POWER_OFF 0x00
 #define ARG_POWER_ON 0x01
 
+#pragma PERSISTENT(current_intensity)
+uint8_t current_intensity = ARG_GLOBAL_INTENSITY_NOR;
+
 uint8_t screen[] = { 0, 0, 0, 0 };
 
 uint8_t Display_get_screen(uint8_t **screen_ptr)
@@ -82,7 +85,7 @@ void Display_init(void)
     EUSCI_B_I2C_enable(I2C_BASE);
     Display_send(CMD_DECODE_MODE, ARG_DECODE_MODE_NONE);
     Display_send(CMD_SCAN_LIMIT, ARG_SCAN_LIMIT_4_DIGITS);
-    Display_set_intensity(ARG_GLOBAL_INTENSITY_NOR);
+    Display_send_intensity();
 
     // Animate all segments for a while
     Display_start(CLEAR);
@@ -96,10 +99,6 @@ void Display_init(void)
     Display_stop();
 }
 
-void Display_set_intensity(uint8_t intensity)
-{
-    Display_send(CMD_GLOBAL_INTENSITY, intensity); // Between 0 and 0x0f (actually 0x0e)
-}
 
 void Display_start(bool clear)
 {
@@ -114,4 +113,25 @@ void Display_stop(void)
 {
     Display_send(CMD_POWER, ARG_POWER_OFF);
     EUSCI_B_I2C_disable(I2C_BASE);
+}
+
+void Display_save_intensity(uint8_t new_intensity)
+{
+    current_intensity = new_intensity;
+    FRAMCtl_write8(&new_intensity, &current_intensity, sizeof(uint8_t));
+}
+
+void Display_add_intensity(uint8_t delta)
+{
+    unsigned short state;
+    ENTER_CRITICAL_SECTION(state);
+    uint8_t new_intensity = (current_intensity + delta) & 0x0F;
+    Display_save_intensity(new_intensity);
+    EXIT_CRITICAL_SECTION(state);
+    Display_send_intensity();
+}
+
+void Display_send_intensity()
+{
+    Display_send(CMD_GLOBAL_INTENSITY, current_intensity); // Between 0 and 0x0f (actually 0x0e ?)
 }
