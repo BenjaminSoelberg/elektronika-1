@@ -52,11 +52,17 @@ void Display_update_screen(void)
     }
 }
 
-void Display_clear(void)
+void Display_fill(uint8_t pattern)
 {
     for (uint8_t i = 0; i < sizeof(screen); i++) {
-        Display_send(CMD_DIGIT_BASE + i, 0);
+        Display_send(CMD_DIGIT_BASE + i, pattern);
     }
+}
+
+
+void Display_clear(void)
+{
+    Display_fill(0);
 }
 
 void Display_init(void)
@@ -77,6 +83,16 @@ void Display_init(void)
     Display_send(CMD_DECODE_MODE, ARG_DECODE_MODE_NONE);
     Display_send(CMD_SCAN_LIMIT, ARG_SCAN_LIMIT_4_DIGITS);
     Display_set_intensity(ARG_GLOBAL_INTENSITY_NOR);
+
+    // Animate all segments for a while
+    Display_start(CLEAR);
+    for (uint8_t x=0xFF;x!=0;x=x>>1) {
+        Display_fill(x);
+        for (uint16_t i=0;i<0x8000;i++) {
+            __no_operation();
+        }
+    }
+
     Display_stop();
 }
 

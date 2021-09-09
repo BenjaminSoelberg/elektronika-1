@@ -15,25 +15,13 @@ void pre_init(void)
     // Stop Watchdog Timer
     WDT_A_hold(WDT_A_BASE);
 
-    //TODO: Seems like prev. port dir and state is set but not in effect while looking at blinking after reset
-    PMM_unlockLPM5();
-
     // Unconnected pins should be set to output mode
     GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN7);
     GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN2 | GPIO_PIN3 | GPIO_PIN4 | GPIO_PIN5 | GPIO_PIN6 | GPIO_PIN7);
     GPIO_setAsOutputPin(GPIO_PORT_P3, GPIO_PIN0 | GPIO_PIN1 | GPIO_PIN2);
-}
 
-void test_render_current_mm_ss(void)
-{
-    uint8_t *screen;
-    Display_get_screen(&screen);
-    struct tm *time = RealtimeClock_getCurrentTime();
-
-    screen[0] = Render_7_segment(time->tm_min / 10, false);
-    screen[1] = Render_7_segment(time->tm_min % 10, true);
-    screen[2] = Render_7_segment(time->tm_sec / 10, false);
-    screen[3] = Render_7_segment(time->tm_sec % 10, false);
+    //TODO: Seems like prev. port dir and state is set but not in effect while looking at blinking after reset
+    PMM_unlockLPM5();
 }
 
 void render_current_time(void)
@@ -157,9 +145,8 @@ int main(void)
     Buttons_start();
 
     __enable_interrupt();
-
     while (true) {
-        __low_power_mode_3(); //TODO: How can we see if we enter 3.5 with no buttons pressed ?
+        __low_power_mode_3();
         run();
     }
 }

@@ -16,41 +16,26 @@ uint8_t button_history[sizeof(button_bits)];
 
 bool Buttons_is_button_up(BUTTONS button)
 {
-    if (button == IGNORE_BUTTON) {
-        return true;
-    }
     return is_button_up(&button_history[button]);
 }
 
 bool Buttons_is_button_down(BUTTONS button)
 {
-    if (button == IGNORE_BUTTON) {
-        return false;
-    }
     return is_button_down(&button_history[button]);
 }
 
 bool Buttons_is_button_pressed(BUTTONS button)
 {
-    if (button == IGNORE_BUTTON) {
-        return false;
-    }
     return is_button_pressed(&button_history[button]);
 }
 
 bool Buttons_is_button_released(BUTTONS button)
 {
-    if (button == IGNORE_BUTTON) {
-        return false;
-    }
     return is_button_released(&button_history[button]);
 }
 
 void Buttons_clear_button(BUTTONS button)
 {
-    if (button == IGNORE_BUTTON) {
-        return;
-    }
     clear_button(&button_history[button]);
 }
 
@@ -58,8 +43,8 @@ void Buttons_timer_stop(void);
 
 void Buttons_init(void)
 {
-    GPIO_setAsInputPinWithPullUpResistor(BUTTONS_PORT, BUTTON_PINS);
-    GPIO_selectInterruptEdge(BUTTONS_PORT, BUTTON_PINS, GPIO_HIGH_TO_LOW_TRANSITION);
+    GPIO_setAsInputPinWithPullDownResistor(BUTTONS_PORT, BUTTON_PINS);
+    GPIO_selectInterruptEdge(BUTTONS_PORT, BUTTON_PINS, GPIO_LOW_TO_HIGH_TRANSITION);
 
     Timer_A_initUpModeParam parameters = {
        .clockSource = TIMER_A_CLOCKSOURCE_ACLK,
@@ -117,7 +102,7 @@ void Buttons_timer_stop(void)
     EXIT_CRITICAL_SECTION(state);
 }
 
-#pragma vector=PORT2_VECTOR
+#pragma vector=BUTTONS_VECTOR
 __interrupt void Buttons_pressed_isr(void)
 {
     if (GPIO_getInterruptStatus(BUTTONS_PORT, BUTTON_PINS)) {
@@ -132,8 +117,8 @@ __interrupt void Buttons_timer_isr(void)
     bool all_released = true;
     uint8_t buttons = GPIO_getInputPinValues(BUTTONS_PORT, BUTTON_PINS);
     for (uint8_t i = 0; i < sizeof(button_bits); i++) {
-        update_button(&button_history[i], (buttons & button_bits[i]) == 0);
-        // I'm not very pleased with the two below calls but it saves the main loop from calling them.
+        update_button(&button_history[i], buttons & button_bits[i]);
+        // I'm not very pleased with the two calls below but it saves the main loop from calling them.
         is_button_pressed(&button_history[i]);
         is_button_released(&button_history[i]);
         if (button_history[i] != CONFIRMED_RELEASE) {

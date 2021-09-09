@@ -6,17 +6,17 @@
 #define BUTTONS_POLL_HZ 30 /* (1/30*3) 100ms minimal response time. Worst case (1/30*7) 233ms if debounce takes longer than (1/30) 3.33ms. See MASK. */
 #define BUTTONS_TIMER_BASE TIMER_A1_BASE
 #define BUTTONS_TIMER_VECTOR TIMER1_A1_VECTOR
-#define IGNORE_BUTTON -1
 
 #define BUTTONS_PORT GPIO_PORT_P1
 #define BUTTON_PINS (GPIO_PIN0 | GPIO_PIN1 | GPIO_PIN4 | GPIO_PIN5 | GPIO_PIN6)
+#define BUTTONS_VECTOR PORT1_VECTOR
 typedef enum
 {
-    BUTTON_YEAR = 0,
-    BUTTON_DATE = 1,
-    BUTTON_SET_H = 2,
+    BUTTON_TIME = 1,
+    BUTTON_SET_H = 4,
     BUTTON_SET_L = 3,
-    BUTTON_TIME = 4
+    BUTTON_DATE = 2,
+    BUTTON_YEAR = 0,
 } BUTTONS;
 
 void Buttons_init(void);
