@@ -1,7 +1,10 @@
 # ELEKTRONIKA-1 - A replacement module for the Russian vintage LED watch Elektronika 1 anno 1978 
 
-## Still in development
-So I think the PCB and firmware is in a good place right now but I'll have to verify it when I get the PCB made.
+## It actually works
+So I think the PCB and firmware is in a good place right.
+## Improvements to come
+1. I2C communication error recovery
+2. Display intensity set
 
 ![](https://github.com/BenjaminSoelberg/elektronika-1/blob/main/Schematics.png)
 
