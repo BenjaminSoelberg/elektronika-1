@@ -26,6 +26,7 @@
 #define ARG_POWER_ON 0x01
 
 #pragma PERSISTENT(current_intensity)
+
 uint8_t current_intensity = ARG_GLOBAL_INTENSITY_NOR;
 
 uint8_t screen[] = { 0, 0, 0, 0 };
@@ -87,13 +88,30 @@ void Display_init(void)
     Display_send(CMD_SCAN_LIMIT, ARG_SCAN_LIMIT_4_DIGITS);
     Display_send_intensity();
 
-    // Animate all segments for a while
     Display_start(CLEAR);
-    for (uint8_t x=0xFF;x!=0;x=x>>1) {
-        Display_fill(x);
-        for (uint16_t i=0;i<0x8000;i++) {
-            __no_operation();
-        }
+
+    // Turn on all segments
+    Display_fill(0xFF);
+    for (uint32_t x=0;x<0x18000;x++) {
+        __no_operation();
+    }
+    // Display USSr
+    screen[0] = SEG_F | SEG_E | SEG_D | SEG_C | SEG_B;
+    screen[1] = SEG_A | SEG_F | SEG_G | SEG_C | SEG_D;
+    screen[2] = SEG_A | SEG_F | SEG_G | SEG_C | SEG_D;
+    screen[3] = SEG_E | SEG_G;
+    Display_update_screen();
+    for (uint32_t x=0;x<0x10000*3;x++) {
+        __no_operation();
+    }
+    // Display EL-1
+    screen[0] = SEG_A | SEG_F | SEG_G | SEG_E | SEG_D;
+    screen[1] = SEG_F | SEG_E | SEG_D;
+    screen[2] = SEG_G;
+    screen[3] = SEG_B | SEG_C;
+    Display_update_screen();
+    for (uint32_t x=0;x<0x10000*3;x++) {
+        __no_operation();
     }
 
     Display_stop();
