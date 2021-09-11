@@ -15,12 +15,11 @@ void pre_init(void)
     // Stop Watchdog Timer
     WDT_A_hold(WDT_A_BASE);
 
-    // Unconnected pins should be set to output mode
+    // Unconnected pins should be set to output mode to save power
     GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN7);
     GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN2 | GPIO_PIN3 | GPIO_PIN4 | GPIO_PIN5 | GPIO_PIN6 | GPIO_PIN7);
     GPIO_setAsOutputPin(GPIO_PORT_P3, GPIO_PIN0 | GPIO_PIN1 | GPIO_PIN2);
 
-    //TODO: Seems like prev. port dir and state is set but not in effect while looking at blinking after reset
     PMM_unlockLPM5();
 }
 
@@ -31,7 +30,7 @@ void render_current_time(void)
     struct tm *time = RealtimeClock_getCurrentTime();
 
     screen[0] = Render_7_segment_nz(time->tm_hour / 10, false);
-    screen[1] = Render_7_segment(time->tm_hour % 10, true);
+    screen[1] = Render_7_segment(time->tm_hour % 10, (time->tm_sec % 2) == 0);
     screen[2] = Render_7_segment(time->tm_min / 10, false);
     screen[3] = Render_7_segment(time->tm_min % 10, false);
 }
@@ -156,14 +155,38 @@ int main(void)
     Display_init();
     Buttons_init();
 
-    // Start essential modules
+    // Start interrupt driven modules
     RealtimeClock_start();
     Buttons_start();
 
+    // Start timers etc.
     __enable_interrupt();
+
+#ifdef ALWAYS_SHOW_TIME
+    Display_start(CLEAR);
+    while (true) {
+        render_current_time();
+        Display_update_screen();
+        for (uint32_t i=0;i<0x40000;i++) {
+            __no_operation();
+        }
+        render_current_date();
+        Display_update_screen();
+        for (uint32_t i=0;i<0x40000;i++) {
+            __no_operation();
+        }
+        render_current_year();
+        Display_update_screen();
+        for (uint32_t i=0;i<0x40000;i++) {
+            __no_operation();
+        }
+    }
+#else
+    // Main loop
     while (true) {
         __low_power_mode_3();
         run();
     }
+#endif
 }
 

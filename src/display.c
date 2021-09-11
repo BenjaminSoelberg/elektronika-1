@@ -1,5 +1,6 @@
 #include "display.h"
 #include "eusci_b_i2c.h"
+#include "pmm.h"
 
 #define CMD_DIGIT_BASE 0x01
 
@@ -40,12 +41,16 @@ uint8_t Display_get_screen(uint8_t **screen_ptr)
 void Display_send(uint8_t command, uint8_t data)
 {
     EUSCI_B_I2C_setMode(I2C_BASE, EUSCI_B_I2C_TRANSMIT_MODE);
-    EUSCI_B_I2C_masterSendStart(I2C_BASE);
-    EUSCI_B_I2C_masterSendMultiByteNext(I2C_BASE, command);
-    EUSCI_B_I2C_masterSendMultiByteNext(I2C_BASE, data);
-    EUSCI_B_I2C_masterSendMultiByteStop(I2C_BASE);
-    while (EUSCI_B_I2C_isBusBusy(I2C_BASE)) {
-        __no_operation();
+    if (EUSCI_B_I2C_masterSendMultiByteStartWithTimeout(I2C_BASE, command, I2C_TIMEOUT) != STATUS_SUCCESS) {
+        PMM_trigBOR();
+    }
+    if (EUSCI_B_I2C_masterSendMultiByteFinishWithTimeout(I2C_BASE, data, I2C_TIMEOUT) != STATUS_SUCCESS) {
+        PMM_trigBOR();
+    }
+    uint32_t timeout = I2C_TIMEOUT;
+    while (EUSCI_B_I2C_isBusBusy(I2C_BASE) && --timeout) ;
+    if (timeout == 0) {
+        PMM_trigBOR();
     }
 }
 
@@ -101,7 +106,7 @@ void Display_init(void)
     screen[2] = SEG_A | SEG_F | SEG_G | SEG_C | SEG_D;
     screen[3] = SEG_E | SEG_G;
     Display_update_screen();
-    for (uint32_t x=0;x<0x10000*3;x++) {
+    for (uint32_t x=0;x<0x30000;x++) {
         __no_operation();
     }
     // Display EL-1
@@ -110,7 +115,7 @@ void Display_init(void)
     screen[2] = SEG_G;
     screen[3] = SEG_B | SEG_C;
     Display_update_screen();
-    for (uint32_t x=0;x<0x10000*3;x++) {
+    for (uint32_t x=0;x<0x30000;x++) {
         __no_operation();
     }
 
@@ -143,8 +148,7 @@ void Display_add_intensity(uint8_t delta)
 {
     unsigned short state;
     ENTER_CRITICAL_SECTION(state);
-    uint8_t new_intensity = (current_intensity + delta) & 0x0F;
-    Display_save_intensity(new_intensity);
+    Display_save_intensity((current_intensity + delta) & 0x0F);
     EXIT_CRITICAL_SECTION(state);
     Display_send_intensity();
 }

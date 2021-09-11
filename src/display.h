@@ -5,6 +5,7 @@
 
 #define AS1115_SLAVE_ADDRESS 0x00
 #define I2C_BASE EUSCI_B0_BASE
+#define I2C_TIMEOUT 1000
 #define CLEAR true
 #define NO_CLEAR false
 
