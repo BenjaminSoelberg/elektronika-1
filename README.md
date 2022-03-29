@@ -14,7 +14,7 @@ The module is based around:
 * CR2032 battery
 
 ## Source code
-All functions are placed own modules and consists of:
+Modules:
 
 * buttons.c - This is the button driver and it handles button events 
 * clocksystem.c - Initializes the clock system in the MSP430
@@ -63,6 +63,16 @@ What the original module looks like:
 
 ![Original module](https://github.com/BenjaminSoelberg/elektronika-1/blob/main/module.jpg)
 
+New watch module:
+
+![Dissambled](https://github.com/BenjaminSoelberg/elektronika-1/blob/main/Watch-4.jpg)
+
+
+New watch module installed:
+
+![New watch module](https://github.com/BenjaminSoelberg/elektronika-1/blob/main/Watch-5.jpg)
+
+
 Showing time:
 
 ![Showing time](https://github.com/BenjaminSoelberg/elektronika-1/blob/main/Watch-1.jpg)
@@ -75,10 +85,3 @@ On wrist:
 
 ![On wrist](https://github.com/BenjaminSoelberg/elektronika-1/blob/main/Watch-3.jpg)
 
-Dissambled:
-
-![Dissambled](https://github.com/BenjaminSoelberg/elektronika-1/blob/main/Watch-4.jpg)
-
-New watch module:
-
-![New watch module](https://github.com/BenjaminSoelberg/elektronika-1/blob/main/Watch-5.jpg)
