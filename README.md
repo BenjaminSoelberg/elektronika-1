@@ -1,4 +1,4 @@
-# ELEKTRONIKA-1 - A replacement module for the Russian vintage LED watch Elektronika 1 anno 1978 
+# ELEKTRONIKA-1 - A replacement module for a USSR made vintage LED watch anno 1978
 
 ## It actually works
 The watch works very well and I am pretty happy with it.
