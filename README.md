@@ -1,21 +1,33 @@
 # ELEKTRONIKA-1 - A replacement module for the Russian vintage LED watch Elektronika 1 anno 1978 
 
 ## It actually works
-So I think the PCB and firmware is in a good place right.
-
 The watch works very well and I am pretty happy with it.
 
-Battery life is calculated to be around 10 years (much less if you actually press any buttons)
+It has been my daily driver for a few months by now with no problems what so ever.
 
-The led technology from the late 1970 uses a lot of current.
+I'm actually very proude of the project as a whole.
+
+Battery life is calculated to be around 10 years (less if you actually press buttons) as the LED technology from the late 1970 uses a lot of current.
 
 The watch uses around 0.002 mA/h in standby and 10-40 mA/h depending on intensity, while displaying.
 
-![](https://github.com/BenjaminSoelberg/elektronika-1/blob/main/Schematics.png)
+![Showing time](https://github.com/BenjaminSoelberg/elektronika-1/blob/main/Watch-1.jpg)
 
-![](https://github.com/BenjaminSoelberg/elektronika-1/blob/main/PCB-Front.png)
+![Showning date](https://github.com/BenjaminSoelberg/elektronika-1/blob/main/Watch-2.jpg)
 
-![](https://github.com/BenjaminSoelberg/elektronika-1/blob/main/PCB-Front-3D.png)
+![On wrist](https://github.com/BenjaminSoelberg/elektronika-1/blob/main/Watch-3.jpg)
 
-![](https://github.com/BenjaminSoelberg/elektronika-1/blob/main/PCB-Back-3D.png)
+![Dissambled](https://github.com/BenjaminSoelberg/elektronika-1/blob/main/Watch-4.jpg)
+
+![New watch module](https://github.com/BenjaminSoelberg/elektronika-1/blob/main/Watch-5.jpg)
+
+![Schematics](https://github.com/BenjaminSoelberg/elektronika-1/blob/main/Schematics.png)
+
+![The four PCB layers](https://github.com/BenjaminSoelberg/elektronika-1/blob/main/PCB-Front.png)
+
+![3D render of front PCB](https://github.com/BenjaminSoelberg/elektronika-1/blob/main/PCB-Front-3D.png)
+
+![3D render of back PCB](https://github.com/BenjaminSoelberg/elektronika-1/blob/main/PCB-Back-3D.png)
+
+![Original module](https://github.com/BenjaminSoelberg/elektronika-1/blob/main/module.jpg)
 
